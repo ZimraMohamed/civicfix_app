@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+
+    function isAdmin() {
+      return signedIn() &&
+        'admin' in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles;
+    }
+
+    match /users/{uid} {
+      // You can read your own record; admins can read anyone's.
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+
+      // A new account may only create its own record, and only as a plain public user.
+      allow create: if signedIn() && request.auth.uid == uid
+                    && request.resource.data.roles == ['public'];
+
+      // Admins can change anything. Everyone else can edit their own record
+      // but can NOT change their roles.
+      allow update: if isAdmin()
+                    || (signedIn() && request.auth.uid == uid
+                        && request.resource.data.roles == resource.data.roles);
+
+      allow delete: if false;
+    }
+  }
+}
