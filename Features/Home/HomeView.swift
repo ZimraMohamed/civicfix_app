@@ -10,7 +10,7 @@ struct HomeView: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            Text(firstName.isEmpty ? "Welcome to CivicFix" : "Welcome, \(firstName)")
+            Text(firstName.isEmpty ? "Welcome to Civicfix" : "Welcome, \(firstName)")
                 .font(AppFonts.screenTitle)
                 .foregroundStyle(AppColors.textPrimary)
             Text("Report. Track. Improve.")

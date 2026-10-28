@@ -18,6 +18,14 @@ nonisolated enum AuthError: LocalizedError {
         case .notSignedIn: "You’re not signed in. Please sign in again."
         case .unknown: "Something went wrong. Please try again."
         }
+        
+        
+        
+        
+        
+        
+        
+        
     }
 }
 
